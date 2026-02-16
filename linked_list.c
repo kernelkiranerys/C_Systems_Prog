@@ -7,37 +7,76 @@ struct Node {
     struct Node *prev;
 
 };
+
+// Function prototypes
+void add(struct Node **head, char data);
+void sort(struct Node *head);
+void delete(struct Node **head, char key);
+void printList(struct Node *node);
+void freeList(struct Node *head);
+
 int main() {
     struct Node *head = NULL;
-    struct Node *second = NULL;
-    struct Node *third = NULL;
-
-    head = (struct Node *)malloc(sizeof(struct Node));
-    second = (struct Node *)malloc(sizeof(struct Node));
-    third = (struct Node *)malloc(sizeof(struct Node));
-
-    head->data = 1;
-    head->next = second;
-    head->prev = NULL;
-
-    second->data = 2;
-    second->next = third;
-    second->prev = head;
-
-    third->data = 3;
-    third->next = NULL;
-    third->prev = second;
-
-    struct Node *current = head;
-    while (current != NULL) {
-        printf("%d ", current->data);
-        current = current->next;
-    }
     
-    free(head);
-    free(second);
-    free(third);
-
+    printf("=== Linked List Testing Suite ===\n\n");
+    
+    // Test 1: Add elements
+    printf("Test 1: Adding elements (A, B, C, D, E)\n");
+    add(&head, 'A');
+    add(&head, 'B');
+    add(&head, 'C');
+    add(&head, 'D');
+    add(&head, 'E');
+    printf("List after adding: ");
+    printList(head);
+    
+    // Test 2: Print to verify
+    printf("\nTest 2: Current list\n");
+    printf("List: ");
+    printList(head);
+    
+    // Test 3: Sort elements
+    printf("\nTest 3: Sorting list in ascending order\n");
+    sort(head);
+    printf("List after sorting: ");
+    printList(head);
+    
+    // Test 4: Delete an element
+    printf("\nTest 4: Deleting element 'C'\n");
+    delete(&head, 'C');
+    printf("List after deleting 'C': ");
+    printList(head);
+    
+    // Test 5: Delete head element
+    printf("\nTest 5: Deleting head element 'A'\n");
+    delete(&head, 'A');
+    printf("List after deleting 'A': ");
+    printList(head);
+    
+    // Test 6: Delete non-existent element
+    printf("\nTest 6: Attempting to delete non-existent element 'Z'\n");
+    delete(&head, 'Z');
+    printf("List after attempting to delete 'Z': ");
+    printList(head);
+    
+    // Test 7: Add more elements and re-sort
+    printf("\nTest 7: Adding more elements (M, F, X)\n");
+    add(&head, 'M');
+    add(&head, 'F');
+    add(&head, 'X');
+    printf("List after adding: ");
+    printList(head);
+    
+    printf("\nSorting again: ");
+    sort(head);
+    printList(head);
+    
+    // Clean up
+    printf("\nFreeing all nodes...\n");
+    freeList(head);
+    printf("Done!\n");
+    
+    return 0;
 }   
 //add elements to the linked list
 void add(struct Node **head, char data) {
@@ -108,3 +147,20 @@ void delete(struct Node **head, char key) {
 }
 
 //print the linked list when changes are made
+void printList(struct Node *node) {
+    while (node != NULL) {
+        printf("%c ", node->data);
+        node = node->next;
+    }
+    printf("\n");
+}
+
+//free all nodes in the linked list
+void freeList(struct Node *head) {
+    struct Node *current = head;
+    while (current != NULL) {
+        struct Node *temp = current;
+        current = current->next;
+        free(temp);
+    }
+}
